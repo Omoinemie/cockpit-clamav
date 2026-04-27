@@ -102,7 +102,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: deb-package
-          path: cockpit-clamav_*_amd64.deb
+          path: cockpit-clamav_*_all.deb
 
   # ── 阶段 3: 发布 Release ──
   release:
@@ -133,7 +133,7 @@ jobs:
 
           BODY+="### Install"$'\n'
           BODY+='```bash'$'\n'
-          BODY+="sudo dpkg -i cockpit-clamav_${VER}_amd64.deb"$'\n'
+          BODY+="sudo dpkg -i cockpit-clamav_${VER}_all.deb"$'\n'
           BODY+="sudo systemctl restart cockpit"$'\n'
           BODY+='```'$'\n'
 
@@ -146,4 +146,4 @@ jobs:
           tag_name: v${{ needs.prepare.outputs.ver }}
           name: v${{ needs.prepare.outputs.ver }}
           body_path: /tmp/release_body.md
-          files: cockpit-clamav_*_amd64.deb
+          files: cockpit-clamav_*_all.deb
