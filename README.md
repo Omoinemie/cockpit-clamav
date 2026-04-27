@@ -71,7 +71,7 @@ bash build-deb.sh
 
 构建时从 `version` 文件读取版本号，同步更新 `manifest.json` 和 `index.html` 页脚。
 
-输出：`cockpit-clamav_<version>_amd64.deb`
+输出：`cockpit-clamav_<version>_all.deb`
 
 ## 项目结构
 
