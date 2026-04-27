@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="appName">ClamAV 防病毒</title>
+    <link rel="stylesheet" href="static/css/variables.css">
+    <link rel="stylesheet" href="static/css/reset.css">
+    <link rel="stylesheet" href="static/css/layout.css">
+    <link rel="stylesheet" href="static/css/components.css">
+
+</head>
+<body class="menu-side">
+
+    <!-- ========== Top Navigation ========== -->
+    <nav class="top-nav" id="topNav">
+        <div class="top-nav-left">
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="菜单" data-i18n-aria="menuAria">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+            </button>
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <span data-i18n="appName">ClamAV 防病毒</span>
+            </div>
+        </div>
+        <div class="top-nav-right">
+            <!-- Service status -->
+            <button class="icon-btn" id="statusBtn" title="服务状态" aria-label="服务状态" data-i18n-title="svcStatusAria" data-i18n-aria="svcStatusAria">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span class="status-dot online" id="statusDot"></span>
+            </button>
+            <!-- Notifications -->
+            <button class="icon-btn" id="notifBtn" title="通知" aria-label="通知中心" data-i18n-title="notifAria" data-i18n-aria="notifAria">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span class="badge" id="notifBadge" style="display:none;">0</span>
+            </button>
+            <!-- Menu layout toggle -->
+            <button class="icon-btn" id="menuLayoutBtn" title="切换菜单布局" aria-label="切换菜单布局" data-i18n-title="menuLayoutAria" data-i18n-aria="menuLayoutAria">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="layoutIconTop"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="layoutIconSide" style="display:none;"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+            </button>
+            <!-- Language -->
+            <button class="icon-btn" id="langBtn" title="切换语言" aria-label="切换语言" data-i18n-title="langAria" data-i18n-aria="langAria">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </button>
+            <!-- Theme -->
+            <button class="icon-btn" id="themeBtn" title="切换主题" aria-label="切换明暗主题" data-i18n-title="themeAria" data-i18n-aria="themeAria">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIconSun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIconMoon" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <!-- Settings -->
+            <button class="icon-btn" id="settingsBtn" title="设置" aria-label="打开设置" data-i18n-title="settingsAria" data-i18n-aria="settingsAria">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ========== Top menu row (横版菜单) ========== -->
+    <div class="top-menu-row" id="topMenuRow">
+        <div class="top-menu-bar" id="topMenuBar" role="navigation" aria-label="顶部菜单" data-i18n-aria="topMenuAria"></div>
+    </div>
+
+    <!-- ========== Main Layout ========== -->
+    <div class="app-container">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header" data-i18n="navigation">导航菜单</div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+        </aside>
+
+        <main class="main-content" id="main-content">
+
+            <!-- ===== Dashboard ===== -->
+            <div class="page-section active" id="sec-dashboard">
+                <div class="content-card">
+                    <h2 data-i18n="dashboardTitle">安全仪表板</h2>
+                    <p style="color:var(--text-secondary);margin-bottom:18px;" data-i18n="dashboardDesc">系统安全状态概览</p>
+                </div>
+                <div class="card-grid card-grid-8">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-shield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                        <div class="stat-value" id="statClean">0</div>
+                        <div class="stat-label" data-i18n="statClean">扫描文件数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+                        <div class="stat-value" id="statInfected">0</div>
+                        <div class="stat-label" data-i18n="statInfected">感染文件</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg></div>
+                        <div class="stat-value" id="statQuarantine">0</div>
+                        <div class="stat-label" data-i18n="statQuarantine">隔离文件</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-database"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                        <div class="stat-value" id="statLastScan" style="font-size:1rem;">--</div>
+                        <div class="stat-label" data-i18n="statLastScan">上次扫描</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--accent-light);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                        <div class="stat-value" id="statScanCount">0</div>
+                        <div class="stat-label" data-i18n="statScanCount">扫描次数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--warning-light);color:var(--warning);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                        <div class="stat-value" id="statLastDuration" style="font-size:1.2rem;">--</div>
+                        <div class="stat-label" data-i18n="statLastDuration">上次耗时</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--info-light);color:var(--info);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <div class="stat-value" id="statRealtime" style="font-size:1rem;">--</div>
+                        <div class="stat-label" data-i18n="statRealtime">实时防护</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--success-light);color:var(--success);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+                        <div class="stat-value" id="statDefVersion" style="font-size:1rem;">--</div>
+                        <div class="stat-label" data-i18n="statDefVersion">病毒库版本</div>
+                    </div>
+                </div>
+
+                <!-- Service status panel -->
+                <div class="content-card">
+                    <h2 style="margin-bottom:14px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="vertical-align:-3px;margin-right:6px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <span data-i18n="serviceStatusTitle">服务状态</span>
+                        <button class="btn btn-sm btn-secondary" onclick="App.refreshStatus()" style="float:right;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                            <span data-i18n="btnRefresh">刷新</span>
+                        </button>
+                    </h2>
+                    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+                        <button class="btn btn-sm btn-success" onclick="App.startAllServices()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span data-i18n="svcStartAll">全部启动</span></button>
+                        <button class="btn btn-sm btn-danger" onclick="App.stopAllServices()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="6" y="6" width="12" height="12" rx="1"/></svg> <span data-i18n="svcStopAll">全部停止</span></button>
+                        <button class="btn btn-sm btn-secondary" onclick="App.restartAllServices()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> <span data-i18n="svcRestartAll">全部重启</span></button>
+                    </div>
+                    <div id="serviceStatusList" class="service-status-list"></div>
+                </div>
+
+                <!-- Real-time protection -->
+                <div class="realtime-card" id="realtimeCard">
+                    <div class="realtime-info">
+                        <div class="realtime-title" data-i18n="realtimeTitle">实时防护</div>
+                        <div class="realtime-desc" id="realtimeDesc" data-i18n="realtimeDisabled">ClamAV 守护进程实时监控文件系统</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="realtimeToggle"><span class="toggle-track"></span></label>
+                </div>
+            </div>
+
+            <!-- ===== Virus Scan ===== -->
+            <div class="page-section" id="sec-scan">
+                <div class="content-card">
+                    <h2 data-i18n="scanTitle">病毒扫描</h2>
+                    <p style="color:var(--text-secondary);margin-bottom:18px;" data-i18n="scanDesc">选择扫描方式</p>
+
+                    <!-- Quick scan presets -->
+                    <h3 style="font-size:0.95rem;margin-bottom:12px;" data-i18n="scanQuickScan">快速扫描</h3>
+                    <div class="scan-preset-grid" id="scanPresetGrid">
+                        <div class="scan-preset-card" data-paths="/etc,/tmp,/var/tmp,/home" onclick="App.scanPreset(this)">
+                            <div class="preset-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+                            <div class="preset-label" data-i18n="scanQuickSystem">系统目录</div>
+                            <div class="preset-paths">/etc, /tmp, /var/tmp, /home</div>
+                        </div>
+                        <div class="scan-preset-card" data-paths="/home" onclick="App.scanPreset(this)">
+                            <div class="preset-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+                            <div class="preset-label" data-i18n="scanQuickHome">用户目录</div>
+                            <div class="preset-paths">/home</div>
+                        </div>
+                        <div class="scan-preset-card" data-paths="/var/www" onclick="App.scanPreset(this)">
+                            <div class="preset-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                            <div class="preset-label" data-i18n="scanQuickWeb">Web 目录</div>
+                            <div class="preset-paths">/var/www</div>
+                        </div>
+                        <div class="scan-preset-card" data-paths="/tmp" onclick="App.scanPreset(this)">
+                            <div class="preset-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
+                            <div class="preset-label" data-i18n="scanQuickTemp">临时文件</div>
+                            <div class="preset-paths">/tmp</div>
+                        </div>
+                        <div class="scan-preset-card" data-paths="/" onclick="App.scanPreset(this)">
+                            <div class="preset-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+                            <div class="preset-label" data-i18n="scanFullScan">全盘扫描</div>
+                            <div class="preset-paths">/</div>
+                        </div>
+                        <!-- Memory scan -->
+                        <div class="scan-preset-card preset-memory" onclick="App.scanMemory()">
+                            <div class="preset-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div>
+                            <div class="preset-label" data-i18n="scanMemory">内存扫描</div>
+                            <div class="preset-paths" data-i18n="scanMemoryDesc">扫描运行进程内存</div>
+                        </div>
+                    </div>
+
+                    <!-- Custom scan -->
+                    <h3 style="font-size:0.95rem;margin:22px 0 12px;" data-i18n="scanCustomScan">自定义扫描</h3>
+                    <div class="scan-path-input">
+                        <input class="form-input" type="text" id="scanPath" data-i18n-placeholder="scanPathPlaceholder" placeholder="输入文件或目录路径，如 /home 或 /tmp/test.txt">
+                        <button class="btn btn-primary" id="scanBtn" onclick="App.startCustomScan()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <span data-i18n="scanBtn">开始扫描</span>
+                        </button>
+                        <button class="btn btn-danger" id="scanStopBtn" onclick="App.stopScan()" style="display:none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+                            <span data-i18n="scanStop">停止扫描</span>
+                        </button>
+                    </div>
+                    <!-- Scan options -->
+                    <div style="display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap;">
+                        <div style="flex:1;min-width:200px;">
+                            <label style="font-size:0.82rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;" data-i18n="scanExclude">排除目录</label>
+                            <input class="form-input" type="text" id="scanExclude" placeholder="/proc,/sys,/dev">
+                        </div>
+                        <div style="width:140px;">
+                            <label style="font-size:0.82rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;" data-i18n="scanThreads">并行线程</label>
+                            <div class="custom-select custom-select-up" data-field="scanThreads">
+                                <div class="custom-select-trigger" tabindex="0"><span class="custom-select-value"></span><svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+                                <div class="custom-select-options">
+                                    <div class="custom-select-option" data-value="1">1</div>
+                                    <div class="custom-select-option" data-value="2">2</div>
+                                    <div class="custom-select-option" data-value="4">4</div>
+                                    <div class="custom-select-option" data-value="8">8</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scan progress -->
+                    <div class="scan-progress-area" id="scanProgressArea">
+                        <div class="progress-bar-wrap">
+                            <div class="progress-label">
+                                <span id="scanStatusText" data-i18n="scanScanning">正在扫描...</span>
+                                <span id="scanPercentText">0%</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill fill-accent" id="scanProgressBar" style="width:0%"></div></div>
+                        </div>
+                        <div class="scan-current-file" id="scanCurrentFile"></div>
+                    </div>
+
+                    <!-- Scan live log -->
+                    <div class="scan-log-area" id="scanLogArea" style="display:none;">
+                        <div class="scan-log-header">
+                            <span style="font-weight:600;font-size:0.85rem;" data-i18n="scanLogTitle">扫描日志</span>
+                            <button class="btn btn-sm btn-secondary" onclick="App.clearScanLog()"><span data-i18n="btnClear">清空</span></button>
+                        </div>
+                        <div class="scan-log-content" id="scanLogContent"></div>
+                    </div>
+
+                    <!-- Scan results -->
+                    <div id="scanSummaryArea" style="display:none;">
+                        <h3 style="font-size:1rem;margin:18px 0 12px;" data-i18n="scanSummary">扫描摘要</h3>
+                        <div class="def-info-grid">
+                            <div class="def-info-item"><div class="def-label" data-i18n="scanTotalFiles">扫描文件数</div><div class="def-value" id="scanResultTotal">0</div></div>
+                            <div class="def-info-item"><div class="def-label" data-i18n="scanCleanFiles">安全文件数</div><div class="def-value" id="scanResultClean">0</div></div>
+                            <div class="def-info-item"><div class="def-label" data-i18n="scanInfectedFiles">感染文件数</div><div class="def-value" id="scanResultInfected" style="color:var(--danger);">0</div></div>
+                            <div class="def-info-item"><div class="def-label" data-i18n="scanDuration">扫描耗时</div><div class="def-value" id="scanResultDuration">--</div></div>
+                        </div>
+                    </div>
+                    <div id="scanResultsList"></div>
+                </div>
+            </div>
+
+            <!-- ===== Quarantine ===== -->
+            <div class="page-section" id="sec-quarantine">
+                <div class="content-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                        <div>
+                            <h2 data-i18n="quarantineTitle">隔离区</h2>
+                            <p style="color:var(--text-secondary);font-size:0.88rem;margin-top:4px;" data-i18n="quarantineDesc">已隔离的恶意文件管理</p>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-secondary" onclick="App.refreshQuarantine()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> <span data-i18n="btnRefresh">刷新</span></button>
+                            <button class="btn btn-sm btn-danger" id="quarantineDeleteAllBtn" onclick="App.deleteAllQuarantine()" style="display:none;"><span data-i18n="quarantineDeleteAll">清空隔离区</span></button>
+                        </div>
+                    </div>
+                    <div id="quarantineList">
+                        <div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="48" height="48"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="empty-text" data-i18n="quarantineEmpty">隔离区为空</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== Scan History ===== -->
+            <div class="page-section" id="sec-history">
+                <div class="content-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                        <div>
+                            <h2 data-i18n="historyTitle">扫描记录</h2>
+                            <p style="color:var(--text-secondary);font-size:0.88rem;margin-top:4px;" data-i18n="historyDesc">所有扫描操作的历史记录</p>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-secondary" onclick="App.refreshHistory()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> <span data-i18n="btnRefresh">刷新</span></button>
+                            <button class="btn btn-sm btn-danger" onclick="App.clearHistory()"><span data-i18n="historyClear">清空记录</span></button>
+                        </div>
+                    </div>
+                    <div id="historyList">
+                        <div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="48" height="48"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="empty-text" data-i18n="historyEmpty">暂无扫描记录</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== Definitions ===== -->
+            <div class="page-section" id="sec-definitions">
+                <div class="content-card">
+                    <h2 data-i18n="defTitle">病毒库管理</h2>
+                    <p style="color:var(--text-secondary);margin-bottom:18px;" data-i18n="defDesc">ClamAV 病毒定义库状态与更新</p>
+                    <div class="def-info-grid" id="defInfoGrid">
+                        <div class="def-info-item"><div class="def-label" data-i18n="defVersion">病毒库版本</div><div class="def-value" id="defVersion">--</div></div>
+                        <div class="def-info-item"><div class="def-label" data-i18n="defLastUpdate">上次更新</div><div class="def-value" id="defLastUpdate">--</div></div>
+                        <div class="def-info-item"><div class="def-label" data-i18n="defTotalSigs">特征码总数</div><div class="def-value" id="defTotalSigs">--</div></div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="defUpdateBtn" onclick="App.updateDefinitions()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span data-i18n="defUpdateBtn">更新病毒库</span></button>
+                        <button class="btn btn-secondary" id="defCheckBtn" onclick="App.checkDefStatus()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> <span data-i18n="defCheckStatus">检查状态</span></button>
+                    </div>
+                    <div id="defUpdateOutput" style="display:none;margin-top:18px;">
+                        <h3 style="font-size:1rem;margin-bottom:10px;" data-i18n="defUpdateLog">更新日志</h3>
+                        <pre style="background:var(--bg-tertiary);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:14px 16px;font-size:0.82rem;font-family:var(--font-mono);color:var(--text-secondary);overflow-x:auto;max-height:300px;overflow-y:auto;line-height:1.6;" id="defUpdateLog"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ClamAV Config ===== -->
+            <div class="page-section" id="sec-config">
+                <div class="content-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                        <div>
+                            <h2 data-i18n="configTitle">ClamAV 配置</h2>
+                            <p style="color:var(--text-secondary);font-size:0.88rem;margin-top:4px;" data-i18n="configDesc">编辑 /etc/clamav/clamd.conf</p>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-secondary" onclick="App.reloadClamdConf()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> <span data-i18n="btnRefresh">刷新</span></button>
+                            <button class="btn btn-sm btn-primary" onclick="App.saveClamdConf()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> <span data-i18n="configSave">保存配置</span></button>
+                        </div>
+                    </div>
+                    <div style="position:relative;">
+                        <textarea id="clamdConfEditor" class="form-input" style="font-family:var(--font-mono);font-size:0.82rem;line-height:1.7;min-height:480px;resize:vertical;white-space:pre;tab-size:4;" spellcheck="false" data-i18n-placeholder="configLoading" placeholder="正在加载 clamd.conf ..."></textarea>
+                    </div>
+                    <div style="display:flex;gap:10px;margin-top:14px;align-items:center;">
+                        <button class="btn btn-sm btn-secondary" onclick="App.restartClamd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> <span data-i18n="configRestart">重启 ClamAV</span></button>
+                        <span style="font-size:0.78rem;color:var(--text-tertiary);" data-i18n="configRestartHint">修改配置后需重启服务生效</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== Scheduled Scans ===== -->
+            <div class="page-section" id="sec-scheduled">
+                <div class="content-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                        <div>
+                            <h2 data-i18n="scheduledTitle">定时扫描</h2>
+                            <p style="color:var(--text-secondary);font-size:0.88rem;margin-top:4px;" data-i18n="scheduledDesc">管理多个定时扫描任务</p>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="App.showAddScheduled()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span data-i18n="scheduledAdd">添加任务</span>
+                        </button>
+                    </div>
+                    <div id="scheduledList">
+                        <div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="48" height="48"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="empty-text" data-i18n="scheduledEmpty">暂无定时扫描任务</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== Scheduled Scan Edit Modal ===== -->
+            <div class="modal-overlay" id="scheduledEditOverlay">
+                <div class="modal" id="scheduledEditModal">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h3 id="scheduledEditTitle" data-i18n="scheduledAddTask" style="margin-bottom:0;">添加定时扫描</h3><button class="icon-btn" onclick="App.closeScheduledEdit()" title="关闭" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+                    <div class="form-group">
+                        <label data-i18n="scheduledTaskName">任务名称</label>
+                        <input class="form-input" type="text" id="schedEditName" data-i18n-placeholder="schedEditNamePlaceholder" placeholder="例: 每日系统扫描">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="scheduledCronMode">调度方式</label>
+                        <div class="custom-select" data-field="schedEditCronMode">
+                            <div class="custom-select-trigger" tabindex="0"><span class="custom-select-value"></span><svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+                            <div class="custom-select-options">
+                                <div class="custom-select-option" data-value="simple" data-i18n="cronSimple">简单模式</div>
+                                <div class="custom-select-option" data-value="cron" data-i18n="cronExpr">Cron 表达式</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="schedSimpleFields">
+                        <div class="form-group">
+                            <label data-i18n="scanScheduledFreq">扫描频率</label>
+                            <div class="custom-select" data-field="schedEditFreq">
+                                <div class="custom-select-trigger" tabindex="0"><span class="custom-select-value"></span><svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+                                <div class="custom-select-options">
+                                    <div class="custom-select-option" data-value="daily" data-i18n="freqDaily">每天</div>
+                                    <div class="custom-select-option" data-value="weekly" data-i18n="freqWeekly">每周</div>
+                                    <div class="custom-select-option" data-value="monthly" data-i18n="freqMonthly">每月</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="schedDowGroup" style="display:none;">
+                            <label data-i18n="schedDow">星期几</label>
+                            <div class="custom-select" data-field="schedEditDow">
+                                <div class="custom-select-trigger" tabindex="0"><span class="custom-select-value"></span><svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+                                <div class="custom-select-options">
+                                    <div class="custom-select-option" data-value="1" data-i18n="dowMon">周一</div>
+                                    <div class="custom-select-option" data-value="2" data-i18n="dowTue">周二</div>
+                                    <div class="custom-select-option" data-value="3" data-i18n="dowWed">周三</div>
+                                    <div class="custom-select-option" data-value="4" data-i18n="dowThu">周四</div>
+                                    <div class="custom-select-option" data-value="5" data-i18n="dowFri">周五</div>
+                                    <div class="custom-select-option" data-value="6" data-i18n="dowSat">周六</div>
+                                    <div class="custom-select-option" data-value="0" data-i18n="dowSun">周日</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="schedDomGroup" style="display:none;">
+                            <label data-i18n="schedDom">每月几号</label>
+                            <input class="form-input" type="number" id="schedEditDom" min="1" max="31" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="scanScheduledTime">扫描时间</label>
+                            <input class="form-input" type="time" id="schedEditTime" value="03:00">
+                        </div>
+                    </div>
+                    <div id="schedCronFields" style="display:none;">
+                        <div class="form-group">
+                            <label data-i18n="cronExprLabel">Cron 表达式</label>
+                            <input class="form-input" type="text" id="schedEditCron" placeholder="0 3 * * *">
+                            <div style="font-size:0.75rem;color:var(--text-tertiary);margin-top:4px;" data-i18n="cronExprHint">格式: 分 时 日 月 周 (例: 0 3 * * * = 每天3点)</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="scanScheduledPaths">扫描路径</label>
+                        <input class="form-input" type="text" id="schedEditPaths" placeholder="/etc,/tmp,/var,/home">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="scanExclude">排除目录</label>
+                        <input class="form-input" type="text" id="schedEditExclude" placeholder="/proc,/sys,/dev">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="scanThreads">并行线程</label>
+                        <div class="custom-select" data-field="schedEditThreads">
+                            <div class="custom-select-trigger" tabindex="0"><span class="custom-select-value"></span><svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+                            <div class="custom-select-options">
+                                <div class="custom-select-option" data-value="1">1</div>
+                                <div class="custom-select-option" data-value="2">2</div>
+                                <div class="custom-select-option" data-value="4">4</div>
+                                <div class="custom-select-option" data-value="8">8</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-secondary" onclick="App.closeScheduledEdit()" data-i18n="btnCancel">取消</button>
+                        <button class="btn btn-primary" onclick="App.saveScheduledEdit()" data-i18n="saveSettings">保存</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ========== Footer ========== -->
+    <footer class="app-footer">
+        <span>© 2026 <span data-i18n="appName">ClamAV 防病毒</span></span>
+        <span>|</span>
+        <span data-i18n="version">版本</span>: v1.1.30
+        <span>|</span>
+        <span id="footerStatus" data-i18n="serviceNormal">ClamAV 服务正常</span>
+    </footer>
+
+    <!-- ========== Settings Modal ========== -->
+    <div class="modal-overlay" id="settingsOverlay">
+        <div class="modal" id="settingsModal">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h3 id="settingsTitle" data-i18n="settingsTitle" style="margin-bottom:0;">插件设置</h3><button class="icon-btn" onclick="App.closeSettings()" title="关闭" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+            <div class="form-group">
+                <label data-i18n="settingTheme">主题模式</label>
+                <div class="custom-select" data-field="settingTheme">
+                    <div class="custom-select-trigger" tabindex="0"><span class="custom-select-value"></span><svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option" data-value="light" data-i18n="themeLight">明亮模式</div>
+                        <div class="custom-select-option" data-value="dark" data-i18n="themeDark">暗黑模式</div>
+                        <div class="custom-select-option" data-value="system" data-i18n="themeSystem">跟随系统</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="settingLang">界面语言</label>
+                <div class="custom-select" data-field="settingLang">
+                    <div class="custom-select-trigger" tabindex="0"><span class="custom-select-value"></span><svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option" data-value="zh-CN" data-i18n="langZH">中文简体</div>
+                        <div class="custom-select-option" data-value="en" data-i18n="langEN">English</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="settingMenuLayout">菜单布局</label>
+                <div class="custom-select" data-field="settingMenuLayout">
+                    <div class="custom-select-trigger" tabindex="0"><span class="custom-select-value"></span><svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option" data-value="side" data-i18n="menuSide">侧边栏菜单</div>
+                        <div class="custom-select-option" data-value="top" data-i18n="menuTop">顶部栏菜单</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="settingAccentColor">主题颜色</label>
+                <div class="color-picker-row">
+                    <div class="color-swatch active" data-color="#4f6ef7" style="background:#4f6ef7;"></div>
+                    <div class="color-swatch" data-color="#e53e3e" style="background:#e53e3e;"></div>
+                    <div class="color-swatch" data-color="#38a169" style="background:#38a169;"></div>
+                    <div class="color-swatch" data-color="#8b5cf6" style="background:#8b5cf6;"></div>
+                    <div class="color-swatch" data-color="#d69e2e" style="background:#d69e2e;"></div>
+                    <div class="color-swatch" data-color="#06b6d4" style="background:#06b6d4;"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="settingToastDuration">Toast 显示时长(秒)</label>
+                <input class="form-input" type="number" id="settingToastDuration" min="1" max="15" value="4" step="0.5">
+            </div>
+            <div class="form-group">
+                <label data-i18n="settingLogRetention">日志保存周期(天)</label>
+                <input class="form-input" type="number" id="settingLogRetention" min="1" max="365" value="30" step="1">
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" id="settingsReset" onclick="App.resetSettings()" data-i18n="resetDefaults">恢复默认</button>
+                <button class="btn btn-primary" id="settingsSave" onclick="App.saveSettingsFromPanel()" data-i18n="saveSettings">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== Notification Panel ========== -->
+    <div class="notif-panel" id="notifPanel">
+        <div class="notif-panel-header">
+            <span data-i18n="notifications">通知</span>
+            <button class="btn btn-sm btn-secondary" id="clearNotifBtn" data-i18n="clearAll">清除全部</button>
+        </div>
+        <div class="notif-panel-list" id="notifList">
+            <div style="text-align:center;padding:30px;color:var(--text-tertiary);" data-i18n="noNotif">暂无通知</div>
+        </div>
+    </div>
+
+    <!-- ========== Language Dropdown ========== -->
+    <div class="lang-dropdown" id="langDropdown">
+        <div class="lang-dropdown-item active" data-lang="zh-CN"><span class="lang-flag">🇨🇳</span><span>中文简体</span><span class="lang-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 6L9 17l-5-5"/></svg></span></div>
+        <div class="lang-dropdown-item" data-lang="en"><span class="lang-flag">🇺🇸</span><span>English</span><span class="lang-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 6L9 17l-5-5"/></svg></span></div>
+    </div>
+
+    <!-- ========== Confirm Dialog ========== -->
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-dialog">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 id="confirmTitle" data-i18n="confirmDefaultTitle" style="margin-bottom:0;">确认操作</h3><button class="icon-btn" onclick="App.closeConfirm(false)" title="关闭" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+            <p id="confirmMsg" data-i18n="confirmDefaultMsg">确定要执行此操作吗？</p>
+            <div class="confirm-actions">
+                <button class="btn btn-secondary" onclick="App.closeConfirm(false)" data-i18n="btnCancel">取消</button>
+                <button class="btn btn-danger" id="confirmBtn" onclick="App.closeConfirm(true)" data-i18n="btnConfirm">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== Toast ========== -->
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+    <script src="../base1/cockpit.js"></script>
+    <script src="static/js/bridge.js"></script>
+    <script src="static/js/services.js"></script>
+    <script src="static/js/app.js"></script>
+</body>
+</html>
