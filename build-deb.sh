@@ -51,7 +51,7 @@ INSTALLED_SIZE=$(du -sk "$PLUGIN_DIR" | cut -f1)
 cat > "$DEB_DIR/DEBIAN/control" <<EOF
 Package: $PKG_NAME
 Version: $NEW_VER
-Architecture: amd64
+Architecture: all
 Maintainer: cockpit-clamav <admin@localhost>
 Installed-Size: $INSTALLED_SIZE
 Depends: cockpit (>= 276), clamav, clamav-daemon
@@ -91,7 +91,7 @@ chmod 755 "$DEB_DIR/DEBIAN/prerm"
 
 # Build
 OUTPUT_DIR="$(dirname "$SCRIPT_DIR")"
-DEB_FILE="$OUTPUT_DIR/${PKG_NAME}_${NEW_VER}_amd64.deb"
+DEB_FILE="$OUTPUT_DIR/${PKG_NAME}_${NEW_VER}_all.deb"
 
 dpkg-deb --build "$DEB_DIR" "$DEB_FILE"
 
